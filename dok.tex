@@ -1,0 +1,83 @@
+% TeX encoding = utf8
+% TeX spellcheck = pl_PL 
+\documentclass[a4paper, 11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[polish]{babel}
+\usepackage{polski}
+\usepackage{float}
+\usepackage{graphicx}
+\usepackage{listings}
+\usepackage{amsfonts}
+\usepackage{geometry}
+\usepackage{multicol}
+\usepackage{latexsym}
+\usepackage{enumerate}
+\usepackage{hyperref}
+\usepackage{wrapfig}
+\usepackage{color} %red, green, blue, yellow, cyan, magenta, black, white
+\definecolor{mygreen}{RGB}{28,172,0} % color values Red, Green, Blue
+\definecolor{mylilas}{RGB}{170,55,241}
+
+\author{Kamil Foryszewski}
+\title{Sterowanie Procesami - projekt I, zadanie 1.33}
+\frenchspacing
+
+\newgeometry{tmargin=2cm, bmargin=2cm, lmargin=2cm, rmargin=2cm}
+\pagestyle{empty}
+
+
+\begin{document}
+
+\lstset{language=Matlab,%
+    basicstyle=\color{red},
+    breaklines=true,%
+    morekeywords={matlab2tikz},
+    keywordstyle=\color{blue},%
+    morekeywords=[2]{1}, keywordstyle=[2]{\color{black}},
+    identifierstyle=\color{black},%
+    stringstyle=\color{mylilas},%
+    commentstyle=\color{mygreen},%
+    showstringspaces=false,
+    numbers=right,%
+    numberstyle={ \color{black}},% size of the numbers
+    numbersep=5pt, % this defines how far the numbers are from the text
+    emph=[1]{for,endfor,endwhile,endfunction,endif,break},emphstyle=[1]\color{blue}, %some words to emphasise
+    emph=[2]{,.}, emphstyle=[2]\color{yellow},%
+}
+
+\maketitle
+\tableofcontents
+
+\section{Polecenie 1}
+
+\subsection{Ciągły obiekt dynamiczny}
+Dany jest ciągły obiekt dynamiczny o transmitancji: 
+$$G(s) = \frac{2s^2+22s+48}{s^3+8s^2-65s-504} = \frac{2(s+8)(s+3)}{(s+7)(s-8)(s+9)}$$
+
+\subsection{Transmitancja dyskretna}
+Wyznaczona transmitancja dyskretna ma następującą postać: 
+$$G(s) = \frac{2s^2+22s+48}{s^3+8s^2-65s-504} = \frac{2(s+8)(s+3)}{(s+7)(s-8)(s+9)}$$
+Została wyznaczona przy pomocy polecenia \emph{c2d} pakietu matlab. 
+$$Gs = tf([2\quad 22\quad 48], [1\quad 8\quad -65\quad -504])$$
+Na początku został utworzony model transmitancji ciągłej wykorzystany poźniej do wyznaczenia transmitancji dyskretnej. 
+$$Gz = c2d(G,0.1,\ 'zoh')$$
+Gdzie $0.1$ to okres próbkowania, \emph{'zoh'} oznacza ekstrapolator zerowego rzędu. 
+\subsection{Zera i bieguny transmitancji}
+Dla transmitancji ciągłej zera i bieguny odczytujemy bezpośrednio ze wzoru:\\
+Zera: \\
+$s_0^1 = -8$\\
+$s_0^2 = 3$\\
+Bieguny: \\
+$s_b^1 = -7$\\
+$s_b^2 = 8$\\
+$s_b^3 = -9$\\
+\\
+Dla transmitancji dyskretnej zera i bieguny zostały wyznaczone funkcją \emph{root} pakietu matlab: 
+
+
+
+
+
+
+
+\end{document}
