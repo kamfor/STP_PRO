@@ -78,3 +78,71 @@ legend({'Sterowanie', 'x1', 'x2', 'x3'}, ...
     'Location', 'NorthEast');
 title('Wykres sterowania z biegunem dominującym');
 saveas(h,'3_d','png');
+
+%Obserwator zredukowanego rzędu 
+AL11=A1(1,1);
+AL12=A1(1,2:3);
+AL21=A1(2:3,1);
+AL22=A1(2:3,2:3);
+
+BL1=B1(1,1);
+BL2=B1(2:3,1);
+
+%szybki
+pl = [0.3 0.3]; 
+
+aL1 = AL22.'; 
+aL2 = AL12.';
+
+L = acker(aL1, aL2, pl); 
+
+simOutC = sim('obiekt_obserwator_regulator');
+h = figure;
+set(h,'units','points','position',[10,10,1000,800]); 
+stairs(reg.time,reg.signals.values,'r','LineWidth', 1);
+hold on; 
+stairs(x1.time,x1.signals.values,'g','LineWidth', 1);
+hold on; 
+stairs(x2.time,x2.signals.values,'b','LineWidth', 1);
+hold on; 
+stairs(x3.time,x3.signals.values,'c','LineWidth', 1);
+legend({'Sterowanie', 'x1', 'x2', 'x3'}, ...
+    'Location', 'NorthEast');
+title('Wykres sterowania z obserwatorem szybkim');
+saveas(h,'4_b','png');
+
+
+
+
+%wolny
+pl = [0.8 0.8]; 
+
+aL1 = AL22.'; 
+aL2 = AL12.';
+
+L = acker(aL1, aL2, pl); 
+
+simOutC = sim('obiekt_obserwator_regulator');
+h = figure;
+set(h,'units','points','position',[10,10,1000,800]); 
+stairs(reg.time,reg.signals.values,'r','LineWidth', 1);
+hold on; 
+stairs(x1.time,x1.signals.values,'g','LineWidth', 1);
+hold on; 
+stairs(x2.time,x2.signals.values,'b','LineWidth', 1);
+hold on; 
+stairs(x3.time,x3.signals.values,'c','LineWidth', 1);
+legend({'Sterowanie', 'x1', 'x2', 'x3'}, ...
+    'Location', 'NorthEast');
+title('Wykres sterowania z obserwatorem wolnym');
+saveas(h,'4_a','png');
+
+
+
+
+
+
+
+
+
+

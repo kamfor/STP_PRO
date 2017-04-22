@@ -95,7 +95,7 @@ $z_b^3 =0.4066$
 
 
 \subsection{Stabilnosć}
-Na podstawie wartości biegunów transmitancj ciągłej, możemy stwierdzić że układ jest niestabilny. Wynika to z dotatniej wartości jednego z biegunów, co nie jest zgodne z warunkiem stabilności asymptotycznej. Podobnie dla transmitancji dyskretnej, odległość od początkui układu współrzędnych na płaszczyźnie zespolonej powinna być mniejsza niż 1. Warunku tego nie spełnia jeden z biegunów. 
+Na podstawie wartości biegunów transmitancj ciągłej, możemy stwierdzić że układ jest niestabilny. Wynika to z dotatniej wartości jednego z biegunów, co nie jest zgodne z warunkiem stabilności asymptotycznej. Podobnie dla transmitancji dyskretnej, odległość od początku układu współrzędnych na płaszczyźnie zespolonej powinna być mniejsza niż 1. Warunku tego nie spełnia jeden z biegunów. 
 
 \section{Reprezentacja modelu dyskretnego w przestrzeni stanów}
 \subsection{Wyznaczanie parametrów modelu}
@@ -157,10 +157,19 @@ $x_1(k+1) = 3.1287x_1(k)+x_2(k)+ 0.2539u(k)$ \\
 \indent$y(k) = x_1(k)$ \\
 
 \subsection{Reprezentacja graficzna modelu}
-tutaj rysynki z symulinka 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.3]{obiekt2.png}
+\caption{Reprezentacja graficzna modelu wariant I metody bezpośredniej}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.35]{obiekt1.png}
+\caption{Reprezentacja graficzna modelu wariant II metody bezpośredniej}
+\end{figure}
 
 \section{Regulator ze zprzężanem od stanu}
-Zadaniem regulatora ze sprzężenieim od stanu jest sprowadzenie procesu od stanu początkowego do stannu zerowego. Należy więc wyznaczyć wektor $K$ który zgodnie z prawem regulacji: $u(k) = -Kx(k)$ zapewnidobrą jakość regulacji. 
+Zadaniem regulatora ze sprzężenieim od stanu jest sprowadzenie procesu od stanu początkowego do stanu zerowego. Należy więc wyznaczyć wektor $K$ który zgodnie z prawem regulacji: $u(k) = -Kx(k)$ zapewnidobrą jakość regulacji. 
 \subsection{Trzy takie same bieguny rzeczywiste}
 W celu ustalenia najlepszego punktu ulokowania wykonam symulacje w zakresie od 0.05 do 0.8 co 0.05. \\
 
@@ -169,15 +178,26 @@ W celu ustalenia najlepszego punktu ulokowania wykonam symulacje w zakresie od 0
 $K = acker(A_1,B_1,p)$\\
 
 \subsection{Maksymalny przyrost sterowania w zależności od biegunów} 
-tutaj wykres
+\begin{figure}[ht]
+\centering
+\includegraphics[scale=0.5]{3_1.png}
+\caption{Wykrez sależności maksymalnego przyrostu sterowania od wartoości biegunów}
+\end{figure}
 
 
-Stosując jako wskaźnij jakości minimalny przyrost sterowania możemy odczytać z wykresu lokalizację biegunów, wtedy :\\
+\noindent Stosując jako wskaźnij jakości minimalny przyrost sterowania możemy odczytać z wykresu lokalizację biegunów, wtedy :\\
+\\
+
 $p = [0.55\quad0.55\quad 0.55]$\\
-Co Potwierdza poniższy wykres symulacji. Regulator w którkim czasie i bez sokoków sterowania sprowadza układ do stanu końcowego. 
-\\
-wykresik 
-\\
+
+\noindent Co Potwierdza poniższy wykres symulacji. Regulator w którkim czasie i bez sokoków sterowania sprowadza układ do stanu końcowego. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{3_t.png}
+\caption{Wykres symulacji obiektu dla najlepszego wyboru takich samych biegunów}
+\end{figure}
+
 \noindent Wektor K wynosi dla takigo umiejscowienia:\\
 
 $K= \left[
@@ -188,13 +208,81 @@ $K= \left[
 
 
 \subsection{Biegun dominiujący}
-Koljejnym etapem jest takie dobranie biegunów aby jeden z nich był dominujący a pozostałe miały jak najmniejsze znaczenie na układ regulacji. Nadal wybieramy spośród prawej połowy koła jednostkowego. Szybkość regulacji zależy od odległosci od środka układu, w przypadku biegunu dominującego należy ulokować dwa bieguny blisko środka układu oraz jeden dominującu (wolny znacznie dalej). Zostało przeprowadzonych kilka symulacji spełniających powyższe założenia. Oto najlepsza z nich: 0.4 0.4 0.7
+Koljejnym etapem jest takie dobranie biegunów, aby jeden z nich był dominujący, a pozostałe miały jak najmniejsze znaczenie na układ regulacji. Nadal wybieramy spośród prawej połowy koła jednostkowego. Szybkość regulacji zależy od odległosci od środka układu. W przypadku biegunu dominującego należy ulokować dwa bieguny blisko środka układu oraz jeden dominujący znacznie dalej. Zostało przeprowadzonych kilka symulacji spełniających powyższe założenia. Oto najlepsza z nich:\\
+\\
 
-rysunek wykres 
+$p = [0.4\quad0.4\quad 0.7]$\\
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{3_d.png}
+\caption{Wykres symulacji obiektu dla najlepszego wyboru biegunu dominującego}
+\end{figure}
 
 
 \subsection{Struktura układu regulacji} 
-strukrura układu regulacji 
+Symulacje zostały przeprowadzone na obiekcie ze sprzężeniem od stanu którego reprezentacja graficzna przedstawiona jest poniżej. 
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.3]{obiekt_regulator.png}
+\caption{Struktura obiektu z regulatorem}
+\end{figure}
+
+\section{Obserwator zredukowanego rzędu}
+\subsection{Ogólna struktura obserwatora zredukowanego rzędu}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.80]{obs.png}
+\caption{Ogólna struktura obserwatora zredukowanego rzędu}
+\label{}
+\end{figure}
+
+\subsection{Wyznaczanie parametrów}
+Wektor L oblicza się porównując współczynniki przy odpowiednich potęgach zmiennej $z$
+wielomianu charakterystycznego. Wektor L można wyznaczyć korzystając z polecenia pakietu matlab. Szukaną wielkość L znajduje się  następująco:\\
+
+$L=acker(A_{22} ’,A_{12} ’, [z_{o2}\quad z_{o3} ])$\\
+
+\noindent Równanie Obserwatora zredukowanego rzędu ma następującą postać:\\
+\\
+
+$z(k=1) = (A_{22}-LA_{12}(z(k)+Ly(k))+(A_{21}-LA_{11})y(k)+(B_2-LB1)u(k)$
+
+\subsection{Reprezentacja graficzna obiektu z obserwatorem}
+Na podstawie równania obserwatora został zrealizowany model w Symulinku zawierający obiekt, regulator i obserwator zredukowanego rzędu. Schemat układu znajduje się poniżej: 
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.23]{obiekt_obserwator_regulator.png}
+\caption{Struktura obiektu z regulatorem i obserwatorem zredukowanego rzędu}
+\end{figure}
+
+\subsection{Obserwator wolny}
+W pierwszym podpunkcie bieguny obserwatora zostały ulokowane tak, aby regulacja następowała wolno. Najlepszy rezultat z symulowanych wystąpił dla wektora: \\
+
+$p = [0.8\quad0.8]$\\
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{4_a.png}
+\caption{Symulacja modelu z obserwatorem wolnym}
+\end{figure}
+
+\subsection{Obserwator szybki}
+W kolejnym podpunkcie należało tak ulokować bieguny obserwatora, aby regulacja następowała szybko. Dodatkowym wskaźnikiem jakośći podczas obsewacji była umiarkowana wartość sygnału sterującego. Najlepszy rezultat z symulowanych wystąpił dla wektora: \\
+
+$p = [0.3\quad0.3]$\\
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{4_b.png}
+\caption{Symulacja modelu z obserwatorem szybkim}
+\end{figure}
+
+
+
+
 
 
 
