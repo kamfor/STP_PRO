@@ -19,7 +19,7 @@
 \definecolor{mylilas}{RGB}{170,55,241}
 
 \author{Kamil Foryszewski}
-\title{Sterowanie Procesami - projekt I, zadanie 1.33}
+\title{Sterowanie Procesami - projekt 2, zadanie 2.16}
 \frenchspacing
 
 \newgeometry{tmargin=2cm, bmargin=2cm, lmargin=2cm, rmargin=2cm}
@@ -48,13 +48,13 @@
 \maketitle
 \tableofcontents
 
-\section{Polecenie 1}
+\section{Polecenie}
+Obiekt regulacji jest opisany transmitancją: 
+$$G(s) = \frac{K_0e^{-T_0s}}{(T_1 + 1)(T_2+1)}  = \frac{5e^{-T_0s}}{10.04s^2+7.02s +1}  $$
+Gdzie: 
+$K_0 = 3.5, T_0 = 5, T_1 = 2, T_2 = 5.02$
 
-\subsection{Ciągły obiekt dynamiczny}
-Dany jest ciągły obiekt dynamiczny o transmitancji: 
-$$G(s) = \frac{2s^2+22s+48}{s^3+8s^2-65s-504} = \frac{2(s+8)(s+3)}{(s+7)(s-8)(s+9)}$$
-
-\subsection{Transmitancja dyskretna}
+\section{Transmitancja dyskretna}
 Wyznaczona transmitancja dyskretna ma następującą postać: 
 $$G(z) = \frac{0.2539z^2-0.3048s+0.0858}{z^3-3.1287z^2-2.2119z-0.4493}$$
 Została wyznaczona przy pomocy polecenia \emph{c2d} pakietu matlab. 
@@ -62,53 +62,7 @@ $$Gs = tf([2\quad 22\quad 48], [1\quad 8\quad -65\quad -504])$$
 Na początku został utworzony model transmitancji ciągłej wykorzystany poźniej do wyznaczenia transmitancji dyskretnej. 
 $$Gz = c2d(Gs,0.1,\ 'zoh')$$
 Gdzie $0.1$ to okres próbkowania, \emph{'zoh'} oznacza ekstrapolator zerowego rzędu. 
-\subsection{Zera i bieguny transmitancji}
-Dla transmitancji ciągłej zera i bieguny odczytujemy bezpośrednio ze wzoru:\\
-Zera: \\
-
-$s_0^1 = -8$\\
-
-$s_0^2 = 3$\\
-
-\noindent Bieguny: \\
-
-$s_b^1 = -7$\\
-
-$s_b^2 = 8$\\
-
-$s_b^3 = -9$\\
-\\
-Dla transmitancji dyskretnej zera i bieguny zostały wyznaczone funkcją \emph{roots} pakietu matlab:\\ 
-Zera:\\
-
-$z_0^1=0.7502$\\
-
-$z_0^2=0.4502$\\
-
-\noindent Bieguny:\\
-
-$z_b^1 = 2.2255$\\
-
-$z_b^2 =0.4966$\\
-
-$z_b^3 =0.4066$
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      
-
-
+\section{Równanie różnicowe}
 
 
 \end{document}
