@@ -56,13 +56,30 @@ $K_0 = 3.5, T_0 = 5, T_1 = 2, T_2 = 5.02$
 
 \section{Transmitancja dyskretna}
 Wyznaczona transmitancja dyskretna ma następującą postać: 
-$$G(z) = \frac{0.2539z^2-0.3048s+0.0858}{z^3-3.1287z^2-2.2119z-0.4493}$$
+$$G(z) = z^{-10}\frac{0.0388z+0.0346}{z^2-1.684z+0.705}$$
 Została wyznaczona przy pomocy polecenia \emph{c2d} pakietu matlab. 
-$$Gs = tf([2\quad 22\quad 48], [1\quad 8\quad -65\quad -504])$$
-Na początku został utworzony model transmitancji ciągłej wykorzystany poźniej do wyznaczenia transmitancji dyskretnej. 
-$$Gz = c2d(Gs,0.1,\ 'zoh')$$
-Gdzie $0.1$ to okres próbkowania, \emph{'zoh'} oznacza ekstrapolator zerowego rzędu. 
+\begin{figure}[htp]
+\centering
+\includegraphics[scale=0.6]{1_1.png}
+\caption{Odpowiedź skokowatransmitancji ciągłej i dyskretnej}
+\label{}
+\end{figure}%tutaj rysuneczek z matlaba 
+Odpowiedź skokowa obu transmitancji w przybliżeniu jest taka sama. Odpowiedzi skokowe obliczone jako granice transmitancji przy argumentach $s$dążącym do $0$ i $z$ dażącym do $1$ są również bardzo zbliżone. Wzmocnienie statyczne transmitancji ciągłej $K_c = 5$, natomiast wzmocnienie statyczne transmitancji dyskretnej $K_d = 5.0572$
 \section{Równanie różnicowe}
+Korzystając z transmitancji możemy wyznaczyć równanie różnicowe opisujące obiekt w postaci: 
+
+$$y(k) = \sum_{i=1}^{n} b_iy(k-i)+ \sum_{i=1}^{m} c_iu(k-1)$$
+Należy zatem przekształcić transmitancję do następującej postaci: 
+$$G(z) = \frac{0.0388z^{-11}+0.0346z^{-12}}{z-1.684z^{-1}+0.705z^{-2}} = \frac{Y(z)}{U(z)}$$
+Po przekształceniu: 
+$$Y(z)(1-1.6840z^{-1}+0.7050z^{-2}) = U(z)(0..388z^{-11}+0.0346z^{-12})$$
+Skąd możemy bezpośrednio przejść do równania różnicowego: 
+$$y(k) = 1.684(k-1) - 0.705(k-2) + 0.388u(k-11) + 0.0346u(k-12)$$
+
+
+\section{Dobór regulatora PID metodą Zieglera-Nicholsa}
+
+
 
 
 \end{document}
