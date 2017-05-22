@@ -61,7 +61,7 @@ Została wyznaczona przy pomocy polecenia \emph{c2d} pakietu matlab.
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.6]{1_1.png}
-\caption{Odpowiedź skokowatransmitancji ciągłej i dyskretnej}
+\caption{Odpowiedź skokowa transmitancji ciągłej i dyskretnej}
 \label{}
 \end{figure}%tutaj rysuneczek z matlaba 
 Odpowiedź skokowa obu transmitancji w przybliżeniu jest taka sama. Odpowiedzi skokowe obliczone jako granice transmitancji przy argumentach $s$dążącym do $0$ i $z$ dażącym do $1$ są również bardzo zbliżone. Wzmocnienie statyczne transmitancji ciągłej $K_c = 5$, natomiast wzmocnienie statyczne transmitancji dyskretnej $K_d = 5.0572$
@@ -78,6 +78,69 @@ $$y(k) = 1.684(k-1) - 0.705(k-2) + 0.388u(k-11) + 0.0346u(k-12)$$
 
 
 \section{Dobór regulatora PID metodą Zieglera-Nicholsa}
+Transmitancja ciągłego regulatora PID wygląda następujaco: 
+$$R(s) = k_r(1=\frac{1}{T_is}+T_ds)=K_p + K_i\frac{1}{s}+K_ds$$
+Pierwszym etapem metody Zieglera-Nicholsa jest wyznaczenie wzmocnnienia krytyczneho $K$, dla którego sygnał wyjściowy utrzymuje się na poziomie oscylacji, wokół wartości zadanej, ze stałą amplitudą. Przy parametrach $K_i, K_d=0$ topniowo zwiększamy wartosc parametru $K_p$ aż do wystąpienia oscylacji niegasnących o stałej amplitudzie. Dla tak wyznaczonego wzmocnienia odczytujemy również okres oscylacji $T_{osc}$. Wysnaczone parametry wynoszą: \\
+
+$K_{kr} = 0.6314$\\
+\indent $T_{osc} = 17$\\
+
+Posiadając wzmocnienie krytyczne i okres oscylacji możemy obliczyć pozostałe parametry na podstawie tabelki: 
+\begin{table}[htp]
+\centering
+\caption{Tabela nastaw PID}
+\label{my-label}
+\begin{tabular}{|l|l|l|l|}
+\hline
+    & $K_p$       & $K_i $                & $K_d $              \\
+\hline
+P   & $0.5K_{kr} $ &                    &                   \\
+\hline
+PI   & $0.45K_{kr}$ & $\frac{1.2K_p}{T_{osc}}$ &                   \\
+\hline
+PID & $0.6K_{kr} $ & $\frac{2K_p}{T_{osc}}$   & $\frac{8K_p}{T_{osc}}$ \\
+\hline
+\end{tabular}
+\end{table}
+Wynoszą one :\\
+
+$K_p = 0.37884$\\
+\indent$K_i = 0.03714$\\
+\indent$K_d = 0.14856$\\
+\\
+
+\begin{figure}[htp]
+\centering
+\includegraphics[scale=0.60]{2_1.png}
+\caption{Odpowiedź układu na skok jednostkowy z wybranymi parametrami}
+\label{}
+\end{figure}
+
+\subsection{Dyskretny regulator PID}
+Transmitancja dyskretnego regulatora PID ma następującą postać: 
+$$R(z) = \frac{r_2z^{-2} + r_1z^{-1} + r_0}{1-z^{-1}}$$
+Korzystając z przekształcenia transformaty $Z$ otrzymujemy następujące równanie: 
+$$R(z) = \frac{(K_p+K_d)+(K_iT_p-K_p-2K_d)z^{-1} + K_dz^{-2}}{1-z^{-1}}$$
+Porównując z ogólną postacią transmitancji dyskretnej otrzymujemy wartości parametrów: \\
+
+$r_2 = K_d$\\
+\indent$r_1 = K_iT_p -K_p-2K_d$\\
+\indent$r_0 = K_p + K_d$\\
+
+\noindent Co po podstawieniu wyznaczonych nastaw daje: \\
+
+$r_2 = 0.14856$\\ 
+\indent $r_1 = -0.672246$\\
+\indent $r_0 = 0.5274$\\
+
+Okres próbokwania $T_p$ wynosi $0.5s$
+
+\begin{figure}[htp]
+\centering
+\includegraphics[scale=0.60]{2_2.png}
+\caption{Odpowiedź ukłądu na skok jednostkowy w przypadku regulatora dyskretnego}
+\label{}
+\end{figure}
 
 
 
