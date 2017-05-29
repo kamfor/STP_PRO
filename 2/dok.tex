@@ -74,7 +74,7 @@ $$G(z) = \frac{0.0388z^{-11}+0.0346z^{-12}}{z-1.684z^{-1}+0.705z^{-2}} = \frac{Y
 Po przekształceniu: 
 $$Y(z)(1-1.6840z^{-1}+0.7050z^{-2}) = U(z)(0..388z^{-11}+0.0346z^{-12})$$
 Skąd możemy bezpośrednio przejść do równania różnicowego: 
-$$y(k) = 1.684(k-1) - 0.705(k-2) + 0.388u(k-11) + 0.0346u(k-12)$$
+$$y(k) = 1.684y(k-1) - 0.705y(k-2) + 0.388u(k-11) + 0.0346u(k-12)$$
 
 
 \section{Dobór regulatora PID metodą Zieglera-Nicholsa}
