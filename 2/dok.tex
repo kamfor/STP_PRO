@@ -65,6 +65,7 @@ Została wyznaczona przy pomocy polecenia \emph{c2d} pakietu matlab.
 \label{}
 \end{figure}%tutaj rysuneczek z matlaba 
 Odpowiedź skokowa obu transmitancji w przybliżeniu jest taka sama. Odpowiedzi skokowe obliczone jako granice transmitancji przy argumentach $s$dążącym do $0$ i $z$ dażącym do $1$ są również bardzo zbliżone. Wzmocnienie statyczne transmitancji ciągłej $K_c = 5$, natomiast wzmocnienie statyczne transmitancji dyskretnej $K_d = 5.0572$
+\label{3}
 \section{Równanie różnicowe}
 Korzystając z transmitancji możemy wyznaczyć równanie różnicowe opisujące obiekt w postaci: 
 
@@ -72,9 +73,9 @@ $$y(k) = \sum_{i=1}^{n} b_iy(k-i)+ \sum_{i=1}^{m} c_iu(k-1)$$
 Należy zatem przekształcić transmitancję do następującej postaci: 
 $$G(z) = \frac{0.0388z^{-11}+0.0346z^{-12}}{z-1.684z^{-1}+0.705z^{-2}} = \frac{Y(z)}{U(z)}$$
 Po przekształceniu: 
-$$Y(z)(1-1.6840z^{-1}+0.7050z^{-2}) = U(z)(0..388z^{-11}+0.0346z^{-12})$$
+$$Y(z)(1-1.6840z^{-1}+0.7050z^{-2}) = U(z)(0.0388z^{-11}+0.0346z^{-12})$$
 Skąd możemy bezpośrednio przejść do równania różnicowego: 
-$$y(k) = 1.684y(k-1) - 0.705y(k-2) + 0.388u(k-11) + 0.0346u(k-12)$$
+$$y(k) = 1.684y(k-1) - 0.705y(k-2) + 0.0388u(k-11) + 0.0346u(k-12)$$
 
 
 \section{Dobór regulatora PID metodą Zieglera-Nicholsa}
@@ -113,7 +114,7 @@ $K_p = 0.37884$\\
 \centering
 \includegraphics[scale=0.60]{2_1.png}
 \caption{Odpowiedź układu na skok jednostkowy z wybranymi parametrami}
-\label{}
+\label{skok}
 \end{figure}
 
 \subsection{Dyskretny regulator PID}
@@ -142,6 +143,61 @@ Okres próbokwania $T_p$ wynosi $0.5s$
 \label{}
 \end{figure}
 
+\section{Symulacja cyfrowego algorytmu PID oraz DMC }
+\subsection{Symulacja dyskretnego aldorytpu PID}
+Implementacja symulacji dyskretnego aldorytmu PID znajduje się w pliku \textbf{PID.m}. Skrypt został wykorsyztany w poprzednim podpunkcie. 
+\subsection{Symulacja algorytmu DMC w wersji analitycznej}
+ Rozwiązanie analityczne algorytmu regulacji DMC(Dynamic Matrix Control) ma następującą postać: 
+ $$\Delta u = (M^TM+\lambda I)^-1M^t(y^{zad}-y^k-M^p\Delta u^p) $$
+Parametry algorytmu wyznaczamy z odpowiedzi skokowej \ref{skok}, skorzystamy w tym celu z równania modelu wyznaczonego w podpunkcie \ref{3}. Z wartości odpowiedzi skokowej układu w poszczególnych chwilach czasu wyznaczamy macierz $M$ oraz $M^p$. Wartośc sygnału wyjściowego opisuje równanie: 
+$$y = y^0 + M\Delta u = y^k +M^P \Delta u^P + M\Delta u$$
+Skrypt pakietu matlab znajduje się w pliku \textbf{DMC.m}. Są w nim zdefiniowane niezbędne parametry algorytmu takie jak: horyzont predykcji, horyzont dynamiki, horyzont sterowania oraz wskaźnik jakości $\lambda$. 
+\section{Dobór parametrów algorytmu DMC}
+\subsection{Parametry początkowe}
+Horyzont dynamiki okreslamy na podstawie odpowiedzi skokowej \ref{skok} i jest on numerem iteracji w której następuje ustalenie się sygnału odpowiedzi skokowej. W przypadku zadania jest to 40-sta sekunda symulacji czyli 80-ty krok symulacji, ponieważ okres próbokwania wynosi pół sekundy. Przyjmując taki horyzont predykcji otrzymujemy: 
+$D = N = N_u = 80$
+Jako wartość parametru $\lambda$ przyjmujemy 1, aby nie wpływał on znacząco na symulację. 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.60]{horyzont_predykcji_dmc.png}
+\caption{Sterowanie dla wyznaczonego horyzontu predykcji}
+\label{}
+\end{figure}
+
+\subsection{Skracanie horyzontu predykcji}
+Najmniejsza wartość horyzontu predykcji dla której nie następuje pogorszenie regulacji wynosi 60. Poniżej wykres dla kilku wartości horyzontu predykcji. 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.60]{horyzont_predykcji_skracanie.png}
+\caption{Zmniejszony horyzont predykcji}
+\label{}
+\end{figure}
+
+\subsection{Wpływ długości horyzontu sterowania}
+Symulując algorytm regulacji dla różnych wartości horyzontu sterowania, począwsy od wartości 1, i obserwując jakoś sterowania, wartość została okreslona jako 7, poniżej zestawanie kilku symulacji o różnych wartościach współczynnika. Dla większych wartości nie następuje znaczna poprawa a wręcz pogorszenie, natomiast dla mniejszych wartości, czas regulacji zaczyna się wydłużać. 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.60]{horyzont_sterowania.png}
+\caption{Zestawienie regulacji dla różnych wartości horyzontu sterowania}
+\label{}
+\end{figure}
+
+\subsection{Parametr kary $\lambda$}
+Współczynnik $\lambda$ jest wskaźnikiem jakości regulacji i pełni funkcję kary za przeregulowanie. Im większa jego wartość tym łagodniej będzie się zmieniał sygnał sterujący. Poniżej kilk awykresów dla różnych parametrów $\lambda$. Dla pocżatkowej wartości równej 1 obserwujemy gwałtowny skok sterowania który może być niedoupszczalny w wielu rzeczywistych systemach regulacji. Wartość współczynnika która zapewnia stosunkowo łagodny przebieg sygnału sterującego oraz akceptowalny czas regulacji jest $\lambda = 10$
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.60]{lambda_dmc.png}
+\caption{Wykres dla róożnych wartości współczynnika kary}
+\label{}
+\end{figure}
+
+
+
+ 
+ 
+
+ 
+ 
 
 
 
