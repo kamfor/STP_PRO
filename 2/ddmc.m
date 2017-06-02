@@ -1,4 +1,4 @@
-function [ U ] = fdmc( D, Nu, l  )
+function [ U ] = ddmc( D, Nu, l  )
 
 y_zad=1;        % wartosc zadana
 t_sym=100;       % czas symulacji
