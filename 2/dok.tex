@@ -50,7 +50,7 @@
 
 \section{Polecenie}
 Obiekt regulacji jest opisany transmitancją: 
-$$G(s) = \frac{K_0e^{-T_0s}}{(T_1 + 1)(T_2+1)}  = \frac{5e^{-T_0s}}{10.04s^2+7.02s +1}  $$
+$$G(s) = \frac{K_0e^{-T_0s}}{(T_1s + 1)(T_2s+1)}  = \frac{3.5e^{-T_0s}}{10.04s^2+7.02s +1}  $$
 Gdzie: 
 $K_0 = 3.5, T_0 = 5, T_1 = 2, T_2 = 5.02$
 
@@ -110,10 +110,25 @@ $K_p = 0.37884$\\
 \indent$K_d = 0.14856$\\
 \\
 
-\begin{figure}[htp]
+\begin{figure}[H]
 \centering
 \includegraphics[scale=0.60]{2_1.png}
 \caption{Odpowiedź układu na skok jednostkowy z wybranymi parametrami}
+\label{skok}
+\end{figure}
+
+
+\noindent Wyznaczone metodą Zieglera-Nicholsa parametry nie zapewniły dostatecznie dobrej regulacji, w celu poprawy zostało delikatnie zmniejszone wzmocnienie regulatora oraz kilkukrotnie zwiększono stałą różniczkowania, co zapewniło następujące rezultaty: \\
+
+$K_p = 0.35$\\
+\indent$K_i = 0.035$\\
+\indent$K_d = 0.7$\\
+\\
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.60]{2_1_1.png}
+\caption{Odpowiedź układu na skok jednostkowy z dostrojonymi parametrami}
 \label{skok}
 \end{figure}
 
@@ -191,10 +206,57 @@ Współczynnik $\lambda$ jest wskaźnikiem jakości regulacji i pełni funkcję 
 \label{}
 \end{figure}
 \subsection{Parametry dostrojonego regulatora DMC}
+Ostatecznie wybrane nastwy regulatora DMC:\\
+
+horyzont predykcji: $N = 60$\\
+
+horyzont dynamiki: $D = 60$\\
+
+horyzont sterowania: $N_u = 7$\\
+
+wzkaźnik jakości: $\lambda = 10$\\
+
+\noindent Programy wykorzystanne do obliczeń fdmc.m, ddmc.m oraz do generowania wykresów: DMCwykresy.m\\
+
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.60]{Dostrojony_DmC.png}
+\caption{Działanie dostrojonego regulatora DMC}
+\label{}
+\end{figure}
 
 \section{Obszary stabilności}
-\subsection{Stabilność cyfrowego redulatora PID} 
+\subsection{Porównanie algorytmów PID i DMC}
+
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.60]{PIDiDMC.png}
+\caption{Porównanie PID i DMC}
+\label{}
+\end{figure}
+
+Porównując odpowiedzi skokowe obu algorytmów sterowania zauważamy znacznie szybsze osiągnięcie wartości zadanej przez regulator DMC. Biorąc pod uwagę przeregulowanie jak i wartość sygnału sterującego, można z pewnością stwierdzić, że algorytm DMC jest bardziej optymalmy dla tego obiektu. 
+
+ 
+\subsection{Stabilność cyfrowego redulatora PID}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.60]{pid_stability.png}
+\caption{Obszary stabilności algorytmu PID dla różnych wartości wzmocnienia K i opóźnienia T}
+\label{}
+\end{figure}
+Wraz ze wzrostem opóźnienia, maleje maksymalne wzmocnienie dla którego układ nie wpada w oscylacje, możliwość zmian parametrów w stosunki do początkowej jest niewielka. Algorytm PID szybko ulega rozregulowaniu nawet dla niewielkich zmian parametrów. 
+ 
 \subsection{Stabilność regulacji DMC}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.60]{DMC_stability.png}
+\caption{Obszary stabilności algorytmu DMC dla różnych wartości wzmocnienia K i opóźnienia T}
+\label{}
+\end{figure}
+
+Angorytm DMC jest zdwcydowanie bardziej odporny na zmiany parametrów, przy małych zmianach opóźnienia możemy zwiększać wzmocnienie o rzędy wielkości, zachowując szybkość regulacji. Świadczy to o wysokiej stabilności regulacji DMC i sprawia że znajduje on szerokie zastosowanie w sytuacjach, gdzie mamy do czynienia z dynamicznymi zmianami parametrów obiektu. W porównaniu do algorytmu PID, wypada zdecydowanie lepiej. 
 
 
 \section{Symulacja algorytmu GPC}

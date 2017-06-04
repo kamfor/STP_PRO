@@ -6,7 +6,7 @@ t_sym=100;       % czas symulacji
 D=60;           % horyzont dynamiki 
 N=60;           % horyzont predykcji 
 Nu=7;          % horyzont sterowania
-l=1;           % kara za przyrosty sterowania
+l=10;           % kara za przyrosty sterowania
 y_k=0;          % aktualne wyjscie
 u_k=0;          % aktualne sterowanie
 y=zeros(N,1);
@@ -67,18 +67,18 @@ for i=1:t_sym
 end
 
 %% wykresy
-% h = figure;
-% set(h,'units','points','position',[10,10,800,500]); 
-% subplot(211)
-% plot(Y,'r');
-% hold on;
-% stairs(0:t_sym,[0 y_zad*ones(1,t_sym)],'g');
-% ylabel('y, y_{zad}')
-% hold on
-% subplot(212)
-% stairs(0:t_sym,[0 U],'m');
-% xlabel('czas (Tp)');
-% ylabel('u')
-% saveas(h,'horyzont_sterowania','png');
+h = figure;
+set(h,'units','points','position',[10,10,800,500]); 
+subplot(211)
+plot(Y,'r');
+hold on;
+stairs(0:t_sym,[0 y_zad*ones(1,t_sym)],'g');
+ylabel('y, y_{zad}')
+hold on
+subplot(212)
+stairs(0:t_sym,[0 U],'m');
+xlabel('czas (Tp)');
+ylabel('u')
+saveas(h,'Dostrojony_DmC','png');
 
 
