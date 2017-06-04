@@ -58,14 +58,14 @@ $K_0 = 3.5, T_0 = 5, T_1 = 2, T_2 = 5.02$
 Wyznaczona transmitancja dyskretna ma następującą postać: 
 $$G(z) = z^{-10}\frac{0.0388z+0.0346}{z^2-1.684z+0.705}$$
 Została wyznaczona przy pomocy polecenia \emph{c2d} pakietu matlab. 
-\begin{figure}[htp]
+\begin{figure}[H]
 \centering
 \includegraphics[scale=0.6]{1_1.png}
 \caption{Odpowiedź skokowa transmitancji ciągłej i dyskretnej}
-\label{}
-\end{figure}%tutaj rysuneczek z matlaba 
-Odpowiedź skokowa obu transmitancji w przybliżeniu jest taka sama. Odpowiedzi skokowe obliczone jako granice transmitancji przy argumentach $s$dążącym do $0$ i $z$ dażącym do $1$ są również bardzo zbliżone. Wzmocnienie statyczne transmitancji ciągłej $K_c = 5$, natomiast wzmocnienie statyczne transmitancji dyskretnej $K_d = 5.0572$
-\label{3}
+\label{step:1}
+\end{figure}
+Odpowiedź skokowa obu transmitancji w przybliżeniu jest taka sama. Odpowiedzi skokowe obliczone jako granice transmitancji przy argumentach $s$ dążącym do $0$ i $z$ dążącym do $1$ są również bardzo zbliżone. Wzmocnienie statyczne transmitancji ciągłej $K_c = 5$, natomiast wzmocnienie statyczne transmitancji dyskretnej $K_d = 5.0572$
+
 \section{Równanie różnicowe}
 Korzystając z transmitancji możemy wyznaczyć równanie różnicowe opisujące obiekt w postaci: 
 
@@ -75,13 +75,16 @@ $$G(z) = \frac{0.0388z^{-11}+0.0346z^{-12}}{z-1.684z^{-1}+0.705z^{-2}} = \frac{Y
 Po przekształceniu: 
 $$Y(z)(1-1.6840z^{-1}+0.7050z^{-2}) = U(z)(0.0388z^{-11}+0.0346z^{-12})$$
 Skąd możemy bezpośrednio przejść do równania różnicowego: 
-$$y(k) = 1.684y(k-1) - 0.705y(k-2) + 0.0388u(k-11) + 0.0346u(k-12)$$
+\begin{equation}\
+\label{rozn}
+y(k) = 1.684y(k-1) - 0.705y(k-2) + 0.0388u(k-11) + 0.0346u(k-12)
+\end{equation}
 
 
 \section{Dobór regulatora PID metodą Zieglera-Nicholsa}
-Transmitancja ciągłego regulatora PID wygląda następujaco: 
+Transmitancja ciągłego regulatora PID wygląda następująco: 
 $$R(s) = k_r(1=\frac{1}{T_is}+T_ds)=K_p + K_i\frac{1}{s}+K_ds$$
-Pierwszym etapem metody Zieglera-Nicholsa jest wyznaczenie wzmocnnienia krytyczneho $K$, dla którego sygnał wyjściowy utrzymuje się na poziomie oscylacji, wokół wartości zadanej, ze stałą amplitudą. Przy parametrach $K_i, K_d=0$ topniowo zwiększamy wartosc parametru $K_p$ aż do wystąpienia oscylacji niegasnących o stałej amplitudzie. Dla tak wyznaczonego wzmocnienia odczytujemy również okres oscylacji $T_{osc}$. Wysnaczone parametry wynoszą: \\
+Pierwszym etapem metody Zieglera-Nicholsa jest wyznaczenie wzmocnienia krytycznego $K$, dla którego sygnał wyjściowy utrzymuje się na poziomie oscylacji, wokół wartości zadanej, ze stałą amplitudą. Przy parametrach $K_i, K_d=0$ stopniowo zwiększamy wartość parametru $K_p$ aż do wystąpienia oscylacji niegasnących o stałej amplitudzie. Dla tak wyznaczonego wzmocnienia odczytujemy również okres oscylacji $T_{osc}$. Wyznaczone parametry wynoszą: \\
 
 $K_{kr} = 0.6314$\\
 \indent $T_{osc} = 17$\\
@@ -90,7 +93,6 @@ Posiadając wzmocnienie krytyczne i okres oscylacji możemy obliczyć pozostałe
 \begin{table}[htp]
 \centering
 \caption{Tabela nastaw PID}
-\label{my-label}
 \begin{tabular}{|l|l|l|l|}
 \hline
     & $K_p$       & $K_i $                & $K_d $              \\
@@ -114,7 +116,6 @@ $K_p = 0.37884$\\
 \centering
 \includegraphics[scale=0.60]{2_1.png}
 \caption{Odpowiedź układu na skok jednostkowy z wybranymi parametrami}
-\label{skok}
 \end{figure}
 
 
@@ -129,7 +130,6 @@ $K_p = 0.35$\\
 \centering
 \includegraphics[scale=0.60]{2_1_1.png}
 \caption{Odpowiedź układu na skok jednostkowy z dostrojonymi parametrami}
-\label{skok}
 \end{figure}
 
 \subsection{Dyskretny regulator PID}
@@ -149,34 +149,33 @@ $r_2 = 0.14856$\\
 \indent $r_1 = -0.672246$\\
 \indent $r_0 = 0.5274$\\
 
-Okres próbokwania $T_p$ wynosi $0.5s$
+Okres próbkowania $T_p$ wynosi $0.5s$
 
 \begin{figure}[htp]
 \centering
 \includegraphics[scale=0.60]{2_2.png}
-\caption{Odpowiedź ukłądu na skok jednostkowy w przypadku regulatora dyskretnego}
-\label{}
+\caption{Odpowiedź układu na skok jednostkowy w przypadku regulatora dyskretnego}
 \end{figure}
 
 \section{Symulacja cyfrowego algorytmu PID oraz DMC }
-\subsection{Symulacja dyskretnego aldorytpu PID}
-Implementacja symulacji dyskretnego aldorytmu PID znajduje się w pliku \textbf{PID.m}. Skrypt został wykorsyztany w poprzednim podpunkcie. 
+\subsection{Symulacja dyskretnego algorytmu PID}
+Implementacja symulacji dyskretnego algorytmu PID znajduje się w pliku \textbf{PID.m}. Skrypt został wykorzystany w poprzednim podpunkcie. 
 \subsection{Symulacja algorytmu DMC w wersji analitycznej}
  Rozwiązanie analityczne algorytmu regulacji DMC(Dynamic Matrix Control) ma następującą postać: 
  $$\Delta u = (M^TM+\lambda I)^-1M^t(y^{zad}-y^k-M^p\Delta u^p) $$
-Parametry algorytmu wyznaczamy z odpowiedzi skokowej \ref{skok}, skorzystamy w tym celu z równania modelu wyznaczonego w podpunkcie \ref{3}. Z wartości odpowiedzi skokowej układu w poszczególnych chwilach czasu wyznaczamy macierz $M$ oraz $M^p$. Wartośc sygnału wyjściowego opisuje równanie: 
+Parametry algorytmu wyznaczamy z odpowiedzi skokowej rys:~\ref{step:1}, skorzystamy w tym celu z równania \ref{rozn} modelu wyznaczonego w podpunkcie 3. Z wartości odpowiedzi skokowej układu w poszczególnych chwilach czasu wyznaczamy macierz $M$ oraz $M^p$. Wartość sygnału wyjściowego opisuje równanie: 
 $$y = y^0 + M\Delta u = y^k +M^P \Delta u^P + M\Delta u$$
 Skrypt pakietu matlab znajduje się w pliku \textbf{DMC.m}. Są w nim zdefiniowane niezbędne parametry algorytmu takie jak: horyzont predykcji, horyzont dynamiki, horyzont sterowania oraz wskaźnik jakości $\lambda$. 
 \section{Dobór parametrów algorytmu DMC}
+
 \subsection{Parametry początkowe}
-Horyzont dynamiki okreslamy na podstawie odpowiedzi skokowej \ref{skok} i jest on numerem iteracji w której następuje ustalenie się sygnału odpowiedzi skokowej. W przypadku zadania jest to 40-sta sekunda symulacji czyli 80-ty krok symulacji, ponieważ okres próbokwania wynosi pół sekundy. Przyjmując taki horyzont predykcji otrzymujemy: 
+Horyzont dynamiki określamy na podstawie odpowiedzi skokowej rys:~\ref{step:1} i jest on numerem iteracji w której następuje ustalenie się sygnału odpowiedzi skokowej. W przypadku zadania jest to 40-sta sekunda symulacji czyli 80-ty krok symulacji, ponieważ okres próbkowania wynosi pół sekundy. Przyjmując taki horyzont predykcji otrzymujemy: 
 $D = N = N_u = 80$
 Jako wartość parametru $\lambda$ przyjmujemy 1, aby nie wpływał on znacząco na symulację. 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.60]{horyzont_predykcji_dmc.png}
 \caption{Sterowanie dla wyznaczonego horyzontu predykcji}
-\label{}
 \end{figure}
 
 \subsection{Skracanie horyzontu predykcji}
@@ -185,28 +184,28 @@ Najmniejsza wartość horyzontu predykcji dla której nie następuje pogorszenie
 \centering
 \includegraphics[scale=0.60]{horyzont_predykcji_skracanie.png}
 \caption{Zmniejszony horyzont predykcji}
-\label{}
 \end{figure}
 
 \subsection{Wpływ długości horyzontu sterowania}
-Symulując algorytm regulacji dla różnych wartości horyzontu sterowania, począwsy od wartości 1, i obserwując jakoś sterowania, wartość została okreslona jako 7, poniżej zestawanie kilku symulacji o różnych wartościach współczynnika. Dla większych wartości nie następuje znaczna poprawa a wręcz pogorszenie, natomiast dla mniejszych wartości, czas regulacji zaczyna się wydłużać. 
+Symulując algorytm regulacji dla różnych wartości horyzontu sterowania, począwszy od wartości 1, i obserwując jakoś sterowania, wartość została określona jako 7, poniżej zeswatanie kilku symulacji o różnych wartościach współczynnika. Dla większych wartości nie następuje znaczna poprawa a wręcz pogorszenie, natomiast dla mniejszych wartości, czas regulacji zaczyna się wydłużać. 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.60]{horyzont_sterowania.png}
 \caption{Zestawienie regulacji dla różnych wartości horyzontu sterowania}
-\label{}
+
 \end{figure}
 
 \subsection{Parametr kary $\lambda$}
-Współczynnik $\lambda$ jest wskaźnikiem jakości regulacji i pełni funkcję kary za przeregulowanie. Im większa jego wartość tym łagodniej będzie się zmieniał sygnał sterujący. Poniżej kilk awykresów dla różnych parametrów $\lambda$. Dla pocżatkowej wartości równej 1 obserwujemy gwałtowny skok sterowania który może być niedoupszczalny w wielu rzeczywistych systemach regulacji. Wartość współczynnika która zapewnia stosunkowo łagodny przebieg sygnału sterującego oraz akceptowalny czas regulacji jest $\lambda = 10$
+Współczynnik $\lambda$ jest wskaźnikiem jakości regulacji i pełni funkcję kary za przeregulowanie. Im większa jego wartość tym łagodniej będzie się zmieniał sygnał sterujący. Poniżej kilka wykresów dla różnych parametrów $\lambda$. Dla początkowej wartości równej 1, obserwujemy gwałtowny skok sterowania który może być niedopuszczalny w wielu rzeczywistych systemach regulacji. Wartość współczynnika która zapewnia stosunkowo łagodny przebieg sygnału sterującego oraz akceptowalny czas regulacji jest $\lambda = 10$
+
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.60]{lambda_dmc.png}
-\caption{Wykres dla róożnych wartości współczynnika kary}
-\label{}
+\caption{Wykres dla różnych wartości współczynnika kary}
 \end{figure}
 \subsection{Parametry dostrojonego regulatora DMC}
-Ostatecznie wybrane nastwy regulatora DMC:\\
+
+Ostatecznie wybrane nastawy regulatora DMC:\\
 
 horyzont predykcji: $N = 60$\\
 
@@ -216,14 +215,13 @@ horyzont sterowania: $N_u = 7$\\
 
 wzkaźnik jakości: $\lambda = 10$\\
 
-\noindent Programy wykorzystanne do obliczeń fdmc.m, ddmc.m oraz do generowania wykresów: DMCwykresy.m\\
+\noindent Programy wykorzystane do obliczeń fdmc.m, ddmc.m, oraz do generowania wykresów: DMCwykresy.m\\
 
 
 \begin{figure}[H]
 \centering
 \includegraphics[scale=0.60]{Dostrojony_DmC.png}
 \caption{Działanie dostrojonego regulatora DMC}
-\label{}
 \end{figure}
 
 \section{Obszary stabilności}
@@ -233,10 +231,9 @@ wzkaźnik jakości: $\lambda = 10$\\
 \centering
 \includegraphics[scale=0.60]{PIDiDMC.png}
 \caption{Porównanie PID i DMC}
-\label{}
 \end{figure}
 
-Porównując odpowiedzi skokowe obu algorytmów sterowania zauważamy znacznie szybsze osiągnięcie wartości zadanej przez regulator DMC. Biorąc pod uwagę przeregulowanie jak i wartość sygnału sterującego, można z pewnością stwierdzić, że algorytm DMC jest bardziej optymalmy dla tego obiektu. 
+Porównując odpowiedzi skokowe obu algorytmów sterowania zauważamy znacznie szybsze osiągnięcie wartości zadanej przez regulator DMC. Biorąc pod uwagę przeregulowanie jak i wartość sygnału sterującego, można z pewnością stwierdzić, że algorytm DMC jest bardziej optymalny dla tego obiektu. 
 
  
 \subsection{Stabilność cyfrowego redulatora PID}
@@ -244,7 +241,6 @@ Porównując odpowiedzi skokowe obu algorytmów sterowania zauważamy znacznie s
 \centering
 \includegraphics[scale=0.60]{pid_stability.png}
 \caption{Obszary stabilności algorytmu PID dla różnych wartości wzmocnienia K i opóźnienia T}
-\label{}
 \end{figure}
 Wraz ze wzrostem opóźnienia, maleje maksymalne wzmocnienie dla którego układ nie wpada w oscylacje, możliwość zmian parametrów w stosunki do początkowej jest niewielka. Algorytm PID szybko ulega rozregulowaniu nawet dla niewielkich zmian parametrów. 
  
@@ -253,22 +249,9 @@ Wraz ze wzrostem opóźnienia, maleje maksymalne wzmocnienie dla którego układ
 \centering
 \includegraphics[scale=0.60]{DMC_stability.png}
 \caption{Obszary stabilności algorytmu DMC dla różnych wartości wzmocnienia K i opóźnienia T}
-\label{}
 \end{figure}
 
-Angorytm DMC jest zdwcydowanie bardziej odporny na zmiany parametrów, przy małych zmianach opóźnienia możemy zwiększać wzmocnienie o rzędy wielkości, zachowując szybkość regulacji. Świadczy to o wysokiej stabilności regulacji DMC i sprawia że znajduje on szerokie zastosowanie w sytuacjach, gdzie mamy do czynienia z dynamicznymi zmianami parametrów obiektu. W porównaniu do algorytmu PID, wypada zdecydowanie lepiej. 
-
-
-\section{Symulacja algorytmu GPC}
-\section{Dobór parametrów algorytmu GPC}
-\subsection{Horyzont dynamiki}
-\subsection{Horyzont Predykcji}
-\subsection{Horyzont sterowania}
-\subsection{Współczynnik kary $\lambda$}
-\section{Stabilność algorytmu regulacji GPC}
-\section{Porównanie algorytmów DMC i GPC}
-\subsection{Skokowa zmiana wartości zadanej}
-\subsection{skokowa zmiana zakłócenia}
+Algorytm DMC jest zdecydowanie bardziej odporny na zmiany parametrów, przy małych zmianach opóźnienia możemy zwiększać wzmocnienie o rzędy wielkości, zachowując szybkość regulacji. Świadczy to o wysokiej stabilności regulacji DMC i sprawia że znajduje on szerokie zastosowanie w sytuacjach, gdzie mamy do czynienia z dynamicznymi zmianami parametrów obiektu. W porównaniu do algorytmu PID, wypada zdecydowanie lepiej. 
 
 
 
